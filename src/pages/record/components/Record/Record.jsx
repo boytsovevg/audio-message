@@ -33,8 +33,7 @@ export class Record extends Component {
             const audioBlob = new Blob(audioChunks);
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            const play = () => audio.play();
-            resolve({ audioBlob, audioUrl, play });
+            resolve({ audioBlob, audioUrl, data: audio });
           });
 
           mediaRecorder.stop();
@@ -51,12 +50,13 @@ export class Record extends Component {
   }
 
   async stopRecord() {
-    const audio = await this.state.recorder.stop();
+    const audioFile = await this.state.recorder.stop();
 
     this.setState(() => ({
       messages: [...this.state.messages, {
         id: ++this.state.messages.length,
-        audio
+        play: () => audioFile.data.play(),
+        pause: () => audioFile.data.pause(),
       }],
       isRecording: false,
     }));
