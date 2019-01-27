@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Buttons } from '..';
 
-export const Record = () => {
+export class Record extends Component {
 
-  const recordAudio = () =>
-    new Promise(async resolve => {
+  state = {
+    isRecording: false
+  };
+
+  componentDidMount() {
+    this.recorder = null;
+  }
+
+
+  prepareRecorder() {
+    return new Promise(async resolve => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       const audioChunks = [];
@@ -29,19 +39,26 @@ export const Record = () => {
 
       resolve({ start, stop });
     });
+  }
 
-  const sleep = time => new Promise(resolve => setTimeout(resolve, time));
+  async recordAudio() {
+    this.recorder = await this.prepareRecorder();
+    this.setState(() => ({ isRecording: true }));
+    this.recorder.start();
+  }
 
-  const record = async () => {
-    const recorder = await recordAudio();
-    recorder.start();
-    await sleep(3000);
-    const audio = await recorder.stop();
+  async stopRecord() {
+    const audio = await this.recorder.stop();
+    this.setState(() => ({ isRecording: false }));
     audio.play();
-    await sleep(3000);
-  };
+  }
 
-  return <div>
-    <button onClick={record}>Start recording</button>
-  </div>;
-};
+  render() {
+    return <Buttons
+      isRecording={this.state.isRecording}
+      startRecord={() => this.recordAudio()}
+      stopRecord={() => this.stopRecord()}
+    />
+  }
+
+}
