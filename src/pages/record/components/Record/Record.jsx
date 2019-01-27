@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import './Record.scss';
+
 import { Buttons } from '../Buttons/Buttons';
 import { RecordList } from '../RecordList/RecordList';
 
@@ -60,7 +63,7 @@ export class Record extends Component {
   }
 
   render() {
-    return <div>
+    return <div className='record'>
       <Buttons
         isRecording={this.state.isRecording}
         startRecord={() => this.recordAudio()}
