@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Buttons } from '..';
+import { Buttons } from '../Buttons/Buttons';
+import { RecordList } from '../RecordList/RecordList';
 
 export class Record extends Component {
 
@@ -7,7 +8,7 @@ export class Record extends Component {
     recorder: null,
     audio: null,
     isRecording: false,
-    hasAudio: false
+    messages: []
   };
 
 
@@ -48,30 +49,26 @@ export class Record extends Component {
 
   async stopRecord() {
     const audio = await this.state.recorder.stop();
-    this.setState(() => ({ audio, isRecording: false, hasAudio: true }));
-  }
 
-  async playAudio() {
-    this.state.audio.play();
+    this.setState(() => ({
+      messages: [...this.state.messages, {
+        id: ++this.state.messages.length,
+        audio
+      }],
+      isRecording: false,
+    }));
   }
 
   render() {
-    return  <div>
+    return <div>
       <Buttons
         isRecording={this.state.isRecording}
         startRecord={() => this.recordAudio()}
         stopRecord={() => this.stopRecord()}
       />
-      {
-        this.state.hasAudio ?
-          <button
-            onClick={() => this.playAudio()}
-            disabled={this.state.isRecording}
-          >
-            PLAY
-          </button> :
-          null
-      }
-    </div>;
+      <RecordList
+        messages={this.state.messages}
+      />
+    </div>
   }
 }
