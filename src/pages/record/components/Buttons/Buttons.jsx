@@ -1,10 +1,12 @@
 import React from 'react';
 
-export const Buttons = ({isRecording, startRecord, stopRecord}) => {
+export const Buttons = ({ isRecording, startRecord, stopRecord }) => {
 
-  return isRecording ?
-    <button onClick={stopRecord}>STOP</button> :
-    <button onClick={startRecord}>RECORD</button>;
+  return <div>
+    {
+      isRecording ?
+        <button onClick={stopRecord}>STOP</button> :
+        <button onClick={startRecord}>RECORD</button>
+    }
+  </div>;
 };
-
-

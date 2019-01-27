@@ -4,12 +4,11 @@ import { Buttons } from '..';
 export class Record extends Component {
 
   state = {
-    isRecording: false
+    recorder: null,
+    audio: null,
+    isRecording: false,
+    hasAudio: false
   };
-
-  componentDidMount() {
-    this.recorder = null;
-  }
 
 
   prepareRecorder() {
@@ -42,23 +41,37 @@ export class Record extends Component {
   }
 
   async recordAudio() {
-    this.recorder = await this.prepareRecorder();
-    this.setState(() => ({ isRecording: true }));
-    this.recorder.start();
+    const recorder = await this.prepareRecorder();
+    this.setState(() => ({ recorder, isRecording: true }));
+    this.state.recorder.start();
   }
 
   async stopRecord() {
-    const audio = await this.recorder.stop();
-    this.setState(() => ({ isRecording: false }));
-    audio.play();
+    const audio = await this.state.recorder.stop();
+    this.setState(() => ({ audio, isRecording: false, hasAudio: true }));
+  }
+
+  async playAudio() {
+    this.state.audio.play();
   }
 
   render() {
-    return <Buttons
-      isRecording={this.state.isRecording}
-      startRecord={() => this.recordAudio()}
-      stopRecord={() => this.stopRecord()}
-    />
+    return  <div>
+      <Buttons
+        isRecording={this.state.isRecording}
+        startRecord={() => this.recordAudio()}
+        stopRecord={() => this.stopRecord()}
+      />
+      {
+        this.state.hasAudio ?
+          <button
+            onClick={() => this.playAudio()}
+            disabled={this.state.isRecording}
+          >
+            PLAY
+          </button> :
+          null
+      }
+    </div>;
   }
-
 }
