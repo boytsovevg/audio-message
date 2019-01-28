@@ -17,6 +17,8 @@ export class Record extends Component {
 
   prepareRecorder() {
     return new Promise(async resolve => {
+      window.MediaRecorder = window.MediaRecorder || await require('audio-recorder-polyfill');
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       const audioChunks = [];
@@ -56,9 +58,9 @@ export class Record extends Component {
       messages: [...this.state.messages, {
         id: ++this.state.messages.length,
         play: () => audioFile.data.play(),
-        pause: () => audioFile.data.pause(),
+        pause: () => audioFile.data.pause()
       }],
-      isRecording: false,
+      isRecording: false
     }));
   }
 

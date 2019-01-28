@@ -11,6 +11,8 @@
 
   &_recording {
 
+    -webkit-animation: pulse 1.5s ease-in infinite;
+    -o-animation: pulse 1.5s ease-in infinite;
     animation: pulse 1.5s ease-in infinite;
   }
 }
@@ -18,12 +20,18 @@
 
 @keyframes pulse {
   0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
+    -moz-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
     box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
   }
   70% {
-    box-shadow: 0 0 0 15px rgba(51,51,51, 0);
+    -webkit-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
+    -moz-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
+    box-shadow: 0 0 0 15px rgba(51,51,51, 0.4);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(51,51,51, 0);
+    -webkit-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
+    -moz-box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
+    box-shadow: 0 0 0 0 rgba(51,51,51, 0.4);
   }
 }
